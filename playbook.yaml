@@ -1,0 +1,24 @@
+---
+- hosts: all
+  gather_facts: yes
+  become: yes
+  tasks:
+
+  - name: Install wget
+    yum: pkg=wget state=present
+
+  - copy:
+       src: /home/bhanucs2020/.ssh/google_compute_engine
+       dest: /home/bhanucs2020/.ssh/google_compute_engine
+       owner: bhanucs2020
+       group: bhanucs2020
+       mode: 0600
+
+  - name: Disabling Swap on all nodes
+    shell: swapoff -a
+
+  - name: Commenting Swap entries in /etc/fstab
+    replace:
+     path: /etc/fstab
+     regexp: '(^/.*swap*)'
+     replace: '# \1'
