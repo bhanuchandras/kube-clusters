@@ -5,3 +5,4 @@ locals {
   machine_id   = "g1-small"
   owner        = "BhanuChandra"
 }
+

@@ -25,6 +25,15 @@ resource "google_compute_instance" "default" {
 
   network_interface {
     network = "default"
-
+    access_config {
+      // Ephemeral IP
+	network_tier ="STANDARD"
+    }
   }
+
+  tags=["bhanu","poc","kube","centos"]
+}
+
+output "instance_ips" {
+  value = ["${google_compute_instance.default[*].network_interface[0].access_config[0].nat_ip}"]
 }
