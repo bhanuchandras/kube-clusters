@@ -9,15 +9,15 @@ As inital Step we can do use using Terraform create 3 VM's. This can be done by 
 Step 1:
 
 Once you clone the repo you repo on to your cloud shell you can run the following.
-
-> terraform init 
-> terraform plan 
-> terraform apply 
-
+```
+terraform init 
+terraform plan 
+terraform apply 
+```
 Which will create the VM's in project. once you create and explored on how it is done we can run
-
-> terraform destroy 
-
+```
+terraform destroy 
+```
 this will delete all the resources which we created. This can be done easily in terraform. without remembering what all are created. That is beauty of infra as code.
 
 
