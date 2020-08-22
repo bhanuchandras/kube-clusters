@@ -3,6 +3,7 @@ locals {
   region_id    = "asia-east1"
   zone_id      = "asia-east1-a"
   machine_id   = "g1-small"
+  m_machine_id   = "e2-standard-2"
   owner        = "BhanuChandra"
 }
 
