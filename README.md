@@ -20,4 +20,21 @@ terraform destroy
 ```
 this will delete all the resources which we created. This can be done easily in terraform. without remembering what all are created. That is beauty of infra as code.
 
+Post provisioning the VM's 
+run
+
+```
+gcloud compute ssh <<VM NAM>>
+```
+
+which will ask for zone and then will create the ssh passprase. which we will be using for ansible configurations.
+
+you need to update the ansible  ``` env_variable ``` file with your user id in the cloud sheell
+
+post that you can run ansible-playbook command to spin the kubernetes clusters.
+
+```
+ansible-playbook pre-req.yaml master.yaml nodes.yaml
+```
+
 

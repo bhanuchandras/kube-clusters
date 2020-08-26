@@ -6,10 +6,10 @@
   tasks:
 
   - copy:
-       src: /home/bhanucs2020/.ssh/google_compute_engine
-       dest: /home/bhanucs2020/.ssh/google_compute_engine
-       owner: bhanucs2020
-       group: bhanucs2020
+       src: "/home/{{ user }}/.ssh/google_compute_engine"
+       dest: "/home/{{ user }}/.ssh/google_compute_engine"
+       owner: "{{ user }}"
+       group: "{{ user }}"
        mode: 0600
 
   - name: Install wget
