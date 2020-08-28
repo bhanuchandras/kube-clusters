@@ -58,3 +58,10 @@ resource "google_compute_instance" "kube-master" {
 output "instance_ips" {
   value = ["${google_compute_instance.kube-nodes[*].network_interface[0].access_config[0].nat_ip}"]
 }
+resource "null_resource" "username" {
+  provisioner "local-exec" {
+    command = <<EOT
+	sed -i "s/username__/bhanuchandra.sabbavarapu/" variable.tf
+EOT
+  }
+}

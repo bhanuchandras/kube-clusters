@@ -6,4 +6,7 @@ content = templatefile("hosts.tpl",
   	user = "${local.user}"
 	})
 	filename="inventory"
+depends_on = [
+     null_resource.username,
+  ]
 }

@@ -5,6 +5,6 @@ locals {
   machine_id   = "g1-small"
   m_machine_id   = "e2-standard-2"
   owner        = "BhanuChandra"
-  user        = "bhanuchandra_sabbavarapu"
+  user        = "bhanuchandra.sabbavarapu"
 }
 
