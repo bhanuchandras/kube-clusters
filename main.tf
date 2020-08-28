@@ -62,6 +62,7 @@ resource "null_resource" "username" {
   provisioner "local-exec" {
     command = <<EOT
 	sed -i "s/username__/bhanuchandra.sabbavarapu/" variable.tf
+	sed -i "s/username__/bhanuchandra.sabbavarapu/" env_variables
 EOT
   }
 }
