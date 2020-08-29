@@ -13,7 +13,7 @@
     register: output
 
   - name: Initializing Kubernetes cluster
-    shell: kubeadm init 
+    shell: kubeadm init --pod-network-cidr=10.244.0.0/16
     register: output
 
   - name: Storing Logs and Generated token for future purpose.
@@ -25,5 +25,17 @@
      mkdir -p $HOME/.kube
      sudo cp -f /etc/kubernetes/admin.conf $HOME/.kube/config
      sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
   - name: Install Network Add-on
-    command: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+    shell: |
+     kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+     kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/aio/deploy/recommended.yaml
+
+  - name: Copy the File
+    copy: src=update_service.yaml dest=update_service.yaml
+
+  - name: Changes to KubeService
+    command: kubectl apply -f update_service.yaml
+
+  - name: Print Token for Dashboard
+    command: kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep replicaset | awk '{print $1}')
