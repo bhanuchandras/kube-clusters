@@ -38,4 +38,11 @@
     command: kubectl apply -f update_service.yaml
 
   - name: Print Token for Dashboard
-    command: kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep replicaset | awk '{print $1}')
+    shell: |
+     name=`kubectl -n kube-system get secret | grep replicaset | awk '{print $1}'`
+     echo $name
+     kubectl -n kube-system describe secret $name
+    register: token
+
+  - debug:
+     msg: "{{ token.stdout_lines }}"
