@@ -4,13 +4,13 @@ Creating a working document on how to build the projects / Infrasture in GCP wit
 
 While building any app or infra the basic components can be VM's or physical servers. At this moment GCP provides only VM on demand. Although cloud providers like Oracle/IBM provides Physicals as well.
 
-Following cmds if you add to ~/.bashrc it will save in running them everytime start cloud shell
+Following cmds if you add to ~/.bashrc it will save in running them everytime you start cloud shell
 ```
 gcloud config set project bhanu-k8s-proj
 gcloud config set compute/region asia-east1
 sudo apt install ansible -y
 ```
-As inital Step we can do use using Terraform create 3 VM's. This can be done by web UI or gcloud command line, but terraform give cloud abstraction, so that the same command can be used aganist google/AWS/Azure/oracle etc.
+As inital Step we can do use using Terraform create 3 VM's. This can be done by web UI or gcloud command line, but terraform gives cloud abstraction, so that the same command can be used aganist google/AWS/Azure/oracle etc.
 
 Step 1:
 
