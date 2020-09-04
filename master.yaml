@@ -39,6 +39,7 @@
 
   - name: Print Token for Dashboard
     shell: |
+     sleep 120
      name=`kubectl -n kube-system get secret | grep replicaset | awk '{print $1}'`
      echo $name
      kubectl -n kube-system describe secret $name

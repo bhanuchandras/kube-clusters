@@ -17,12 +17,14 @@ Step 1:
 Once you clone the repo you repo on to your cloud shell you can run the following.
 ```
 terraform init 
+terraform refresh -var="username=$USER" -lock=false
 terraform plan 
 terraform apply -var="username=$USER"
 ```
 Which will create the VM's in project. once you create and explored on how it is done we can run
+
 ```
-terraform destroy 
+terraform destroy -var="username=$USER"
 ```
 this will delete all the resources which we created. This can be done easily in terraform. without remembering what all are created. That is beauty of infra as code.
 
