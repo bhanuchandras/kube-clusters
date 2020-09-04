@@ -8,6 +8,7 @@ Following cmds if you add to ~/.bashrc it will save in running them everytime st
 ```
 gcloud config set project bhanu-k8s-proj
 gcloud config set compute/region asia-east1
+sudo apt install ansible -y
 ```
 As inital Step we can do use using Terraform create 3 VM's. This can be done by web UI or gcloud command line, but terraform give cloud abstraction, so that the same command can be used aganist google/AWS/Azure/oracle etc.
 
