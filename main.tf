@@ -1,3 +1,10 @@
+terraform {
+  backend "gcs" {
+    bucket  = "bhanu-k8s-proj"
+    prefix    = "k8s"
+  }
+}
+
 provider "google" {
  credentials = file("CREDENTIALS_FILE.json")
  project     = local.project_id
