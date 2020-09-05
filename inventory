@@ -1,0 +1,5 @@
+[nodes] 
+35.206.196.106 ansible_connection=ssh  ansible_ssh_user=pintomichael173   ansible_ssh_private_key_file=~/.ssh/google_compute_engine
+35.206.214.244 ansible_connection=ssh  ansible_ssh_user=pintomichael173   ansible_ssh_private_key_file=~/.ssh/google_compute_engine
+[master] 
+35.206.236.43 ansible_connection=ssh  ansible_ssh_user=pintomichael173   ansible_ssh_private_key_file=~/.ssh/google_compute_engine
