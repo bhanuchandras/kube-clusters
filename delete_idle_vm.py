@@ -1,37 +1,31 @@
-import googleapiclient.discovery
-from google.oauth2 import service_account
-from flask import Flask, json
 import os
 import time
+import googleapiclient.discovery
+from multiprocessing import Process
+import multiprocessing as mp
 
-api = Flask(__name__)
+res = []
+compute = googleapiclient.discovery.build('compute', 'v1')
+project=os.environ.get('project')
+zone = os.environ.get('zone')
 
-#Globals
-credentials = service_account.Credentials.from_service_account_file('./CREDENTIALS_FILE.json')
-compute = googleapiclient.discovery.build('compute', 'v1',credentials=credentials)
-project = "bhanu-k8s-proj"
-zone = "asia-east1-a"
-name = "vm-kube-master-0"
-bucket = "bhanu-k8s-proj"
-
-#Home
-@api.route('/', methods=['GET'])
-def home():
-    return "Welcome,you are on!"
-
-@api.route('/list', methods=['GET'])
-def list_instances():
+# [START list_instances]
+def list_instances(compute, project, zone):
     result = compute.instances().list(project=project, zone=zone).execute()
-    return result['items'] if 'items' in result else "No_items"
+    return result['items'] if 'items' in result else None
+# [END list_instances]
 
-#Delete Instance
-def delete_instance(compute, project, zone, instance):
+
+# [START delete_instance]
+def delete_instance(compute, project, zone, name):
     return compute.instances().delete(
         project=project,
         zone=zone,
-        instance=instance).execute()
+        instance=name).execute()
+# [END delete_instance]
 
-#wait for deletion
+
+# [START wait_for_operation]
 def wait_for_operation(compute, project, zone, operation):
     print('Waiting for operation to finish...')
     while True:
@@ -39,31 +33,51 @@ def wait_for_operation(compute, project, zone, operation):
             project=project,
             zone=zone,
             operation=operation).execute()
+
         if result['status'] == 'DONE':
             print("done.")
             if 'error' in result:
                 raise Exception(result['error'])
-            return "DELETE SUCCESSFUL"
+            return result
+
         time.sleep(1)
+# [END wait_for_operation]
 
-@api.route('/delete/', methods=['GET'])
-def main():
-    instances = list_instances()
-    output = ""
-    if not instances=="No_items":
-        for instance  in instances:   
-          print instance
-          operation = delete_instance(compute, project, zone, instance["id"])
-          result = wait_for_operation(compute, project, zone, operation['name'])        
-        print('Instances in project %s and zone %s:' % (project, zone))
-        for instance in instances:
-          print(' - ' + instance['name'] + instance["id"])
-          output+=instance['name']+"||"+instance["id"]+"--"
-        return output
-    else:
-        print("no Hosts present")
-        return "No instances present"
+# [START close_host]
+def close_host(instance):
+    operation = delete_instance(compute, project, zone, instance)
+    result = wait_for_operation(compute, project, zone, operation['name'])
+    global res
+    res.append(result['status'])
+    return result['status']
+# [END close_host]
 
-if __name__ == '__main__':
-    api.run(host='127.0.0.1', port=8001)
+# [START run]
+def main(wait=True):
+    output = ""    
+    pool = mp.Pool(mp.cpu_count())
+    print(mp.cpu_count())
+
+    instances = list_instances(compute, project, zone)
     
+    if instances != None:
+        #parallelization
+        instances_id = [i["id"] for i in instances]
+        res = pool.map(close_host,instances_id)
+        
+        #parallelization + concurrency
+        #for i in instances:
+        #    p = Process(target=close_host, args=(i["id"],))
+        #   p.start()
+        
+        print("Completed")
+        print(res)
+        return "|||".join(res)
+        #return      
+        # print('Instances in project %s and zone %s:' % (project, zone))
+        # output=""
+        # for instance in instances:
+        #     print(' - ' + instance['name'])
+        #     output+=instance['name']+"||"
+    else:
+        return f"No VM's Present in the Project now!"
